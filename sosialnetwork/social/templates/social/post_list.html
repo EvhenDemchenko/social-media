@@ -1,0 +1,111 @@
+{% extends 'landing/base.html' %}
+{%load crispy_forms_tags %}
+
+
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>{% if messages %}
+            {% for message  in messages  %}
+                {{message}}
+            {% endfor %}
+            {% endif %}</h1>
+
+        <form method="POST" action="{% url 'social:create-post' %}" enctype="multipart/form-data" class="card shadow-sm p-4 mb-4 mx-auto" style="max-width: 600px;">
+            {% csrf_token %}
+            <h4 class="text-center mb-4">Create a New Post</h4>
+            {% for field in form %}
+            <div class="form-group mb-3">
+                {{ field | as_crispy_field }}
+                {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                <div class="alert alert-danger mt-1">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-send"></i> Share Post
+                </button>
+            </div>
+        </form>
+         <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="btn-group mb-4 w-100">
+                    <a href="{% url 'social:post-list' %}" class="btn btn-outline-primary {% if request.path == '/social/' %}active{% endif %}">
+                        <i class="bi bi-globe"></i> All Posts
+                    </a>
+                    <a href="{% url 'social:post-list-following' %}" class="btn btn-outline-primary {% if request.path == '/social/following' %}active{% endif %}">
+                        <i class="bi bi-people"></i> Following Posts
+                    </a>
+                </div>
+                {% for post in posts %}
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <a class="text-decoration-none text-primary fw-bold" href="{% url 'social:profile-detail' post.author.pk %}">{{ post.author }}</a>
+                                    <small class="text-muted ms-2">{{ post.created_on|date:"F d, Y" }}</small>
+                                </div>
+                            </div>
+                            <p class="card-text">
+                                <a href="{% url 'social:post-detail' post.pk %}">
+                                    {{ post.body }}
+                                </a>
+                            </p>
+                            <div class="d-flex justify-content-end">
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {% if is_paginated %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ToggleBtn(parrent_id){
+            const item = document.getElementById(parrent_id)
+            console.log(item)
+            if (item.classList.contains('d-none')){
+                item.classList.remove('d-none')
+            }else{
+                item.classList.add('d-none')
+            }
+        }
+    </script>
+{% endblock %}

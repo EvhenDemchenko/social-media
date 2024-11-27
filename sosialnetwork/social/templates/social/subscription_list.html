@@ -1,0 +1,27 @@
+{%extends 'landing/base.html'%}
+
+
+{% block content%}
+ 
+
+
+    <div class="container mt-4">
+        <h1 class="mb-4">{{ title }}</h1>
+        <div class="row">
+            {% for sub in subscription %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <img src="{{ sub.picture.url }}" class="card-img-top" alt="{{ sub.name }}'s profile picture" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title">@{{ sub.username }}</h5>
+                        </div> 
+                        <div class="card-footer">
+                            
+                            <a href="{% url 'social:profile-detail' sub.pk %}" class="btn btn-primary">View Profile</a>
+                        </div>
+                    </div>
+                </div> 
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content%}

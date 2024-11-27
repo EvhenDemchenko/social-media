@@ -1,0 +1,14 @@
+{% extends 'landing/base.html' %}
+
+{% block content %}
+    <div class="container text-center py-5 min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="bg-light rounded shadow-sm p-5">
+            <h1 class="display-4 mb-4 fw-bold text-primary">Connect with your friends</h1>
+            <p class="lead mb-5 text-muted">Follow people who interest you, stay up to date on the latest news, and see what people are talking about.</p>
+            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                <a href="{% url "account_login" %}" class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-sm hover-zoom">Login</a>
+                <a href="{% url "account_signup" %}" class="btn btn-outline-secondary btn-lg px-5 py-3 fw-bold shadow-sm hover-zoom">Register</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

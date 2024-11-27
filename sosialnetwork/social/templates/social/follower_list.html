@@ -1,0 +1,25 @@
+{% extends 'landing/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Followers</h1>
+    <div class="row">
+        {% for follower in followers %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ follower.profile.picture.url }}" class="card-img-top" alt="{{ follower.profile.name }}'s profile picture" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@{{ follower.username }}</h5>
+                    </div> 
+                    <div class="card-footer">
+                        
+                        <a href="{% url 'social:profile-detail' follower.profile.pk %}" class="btn btn-primary">View Profile</a>
+                    </div>
+                </div>
+            </div> 
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

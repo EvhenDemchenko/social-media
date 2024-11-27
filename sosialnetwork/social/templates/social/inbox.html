@@ -1,0 +1,30 @@
+{%extends 'landing/base.html'%}
+
+
+{%block content%}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 mb-4 ">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h1 class="card-title mb-4">Your  Conversations</h1>
+                    <form action=" {% url 'social:create-thread' %} " method="get" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+            {% for thread  in threads  %}
+            <div class='col-md-6 mb-4 mt-4'>
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{thread.user}} - {{thread.receiver}}</h5>
+                        <a class="stretched-link" href=" {% url 'social:thread' thread.pk%} "></a>
+                    </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{%endblock%}

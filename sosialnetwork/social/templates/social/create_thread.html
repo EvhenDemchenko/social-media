@@ -1,0 +1,30 @@
+{%extends 'landing/base.html'%}
+
+
+{%block content%}
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h1 class="card-title mb-4">Create Thread</h1>
+                    {% if messages %}
+                        {%for message in messages%}
+                            <div class="alert alert-danger alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                                {{message}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {%endfor%}
+                    {% endif %}
+                    <form method="post" action="{% url 'social:create-thread'  %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <p class="text-muted">Enter username for receiver</p>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

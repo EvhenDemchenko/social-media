@@ -1,0 +1,163 @@
+
+
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-bell-fill h4">{{notifications.count}}</i>
+    </button>
+    {% if notifications.count != 0   %}
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        {% for notification in notifications %}
+            {% if notification.post %}
+                {% if notification.notification_type == 1 %}
+                <!-- like post -->
+                    <li>
+                        <a class="dropdown-item" href="{% url "social:post-notification" notification.pk  notification.post.pk %}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-hand-thumbs-up-fill h4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">@{{ notification.from_user.username }} <b>liked</b> your post
+                                    </h6>                            
+                                    <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                                </div>
+                                <div class="ms-5">
+                                    <a href="{% url "social:remove-notification" notification.pk %}">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                <!-- like post -->
+                {% elif notification.notification_type == 2 %}        
+                <!-- comment post -->
+                    <li>
+                        <a class="dropdown-item" href="{% url "social:post-notification"  notification.pk notification.post.pk %}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-chat-dots-fill h4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">@{{ notification.from_user.username }} <b>comment</b> your post
+                                    </h6>                            
+                                    <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                                </div>
+                                <div class="ms-5">
+                                    <a href="{% url "social:remove-notification" notification.pk %}">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                <!-- comment post -->
+                {% endif %}        
+            {% endif %}
+            {% if notification.comment %}
+                    {% if notification.notification_type == 1 %}
+                    <!-- comment like-->
+                    <li>
+                        <a class="dropdown-item" href="{% url "social:post-notification" notification.pk  notification.comment.post.pk %}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-hand-thumbs-up-fill h4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">@{{ notification.from_user.username }} <b>liked</b> your comment
+                                    </h6>                            
+                                    <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                                </div>
+                                <div class="ms-5">
+                                    <a href="{% url "social:remove-notification" notification.pk %}">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!-- comment like-->
+
+
+                    <!-- comment reply-->
+                    {% elif notification.notification_type == 2 %}
+                    <li>
+                        <a class="dropdown-item" href="{% url "social:post-notification" notification.pk  notification.comment.post.pk %}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-chat-dots-fill h4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">@{{ notification.from_user.username }} <b>replies</b> your comment
+                                    </h6>                            
+                                    <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                                </div>
+                                <div class="ms-5">
+                                    <a href="{% url "social:remove-notification" notification.pk %}">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    {%endif%}
+                    <!-- comment reply-->
+                {%else%}
+            {% if notification.notification_type == 3 %}
+                    <!-- follow user -->
+                    <li>
+                        <a class="dropdown-item" href="{% url "social:follower-notification"  notification.pk %}">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <i class="bi bi-heart-fill h4"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">@{{ notification.from_user.username }} now <b>following</b> you 
+                                    </h6>                            
+                                    <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                                </div>
+                                <div class="ms-5">
+                                    <a href="{% url "social:remove-notification" notification.pk %}">
+                                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!-- follow user -->
+                {% endif %}
+            {% endif %}
+            {% if notification.thread %}
+                <li>
+                    <a class="dropdown-item" href="{% url "social:thread"  notification.thread.pk %}">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="bi bi-chat-dots-fill h4"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0">@{{ notification.from_user.username }} <b>write</b>you 
+                                </h6>                            
+                                <small class="text-muted"> At : {{ notification.date|date:"F d, Y" }}</small>
+                            </div>
+                            <div class="ms-5">
+                                <a href="{% url "social:remove-notification" notification.pk %}">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-dismiss="dropdown" aria-label="Close"><i class="bi bi-x-lg"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+
+
+
